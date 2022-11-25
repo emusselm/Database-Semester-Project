@@ -1,17 +1,17 @@
 CREATE TABLE USERS 
 (
-	id		INT NOT NULL,
+	id		INT NOT NULL AUTO_INCREMENT,
     Fname		VARCHAR(15)	NOT NULL,	
     Lname		VARCHAR(15)	NOT NULL,
     email		VARCHAR(50) ,
     pass		VARCHAR (20),
-    phoneNum 	INT,
+    phoneNum 	VARCHAR(15),
     Primary Key(id)
 );
 
 CREATE TABLE IMAGE
 (
-	imageNum	INT,
+	imageNum	INT NOT NULL AUTO_INCREMENT,
     imagePath	VARCHAR(1024),
     phrase		VARCHAR(2048),
     PRIMARY KEY(imageNum)
@@ -19,19 +19,20 @@ CREATE TABLE IMAGE
 
 CREATE TABLE ADDRESS
 (
-	addressNum		INT,
+	addressNum		INT NOT NULL AUTO_INCREMENT,
     userID			INT,
-    addrName		VARCHAR(64),
+    street			VARCHAR(132),
     city			VARCHAR(32),
     state			CHAR(2),
     zip				INT,
     PRIMARY KEY(addressNum),
-    FOREIGN KEY(userID) REFERENCES USERS(id)
+    FOREIGN KEY(userID) REFERENCES USERS(id),
+	CONSTRAINT UC_ADDRESS UNIQUE (userID, street, zip)
 );
 
 CREATE TABLE ORDERS
 (
-	orderNum	INT,
+	orderNum	INT NOT NULL AUTO_INCREMENT,
     orderDate	DATE,
     total		DECIMAL(10,2),
     userID		INT,
@@ -41,7 +42,7 @@ CREATE TABLE ORDERS
 
 CREATE TABLE SHIPPING
 (
-    shippingNum				INT,
+    shippingNum				INT NOT NULL AUTO_INCREMENT,
 	orderID					INT,
     shippingAddressID		INT,
     PRIMARY KEY(shippingNum),
@@ -52,9 +53,9 @@ CREATE TABLE SHIPPING
 
 CREATE TABLE PRODUCTS 
 (
-	itemNum	INT,
+	itemNum	INT NOT NULL AUTO_INCREMENT,
     title		varchar(1024),
-    price		DECIMAL(3, 2),
+    price		DECIMAL(10, 2),
     merchType	varchar(30),
     merchImagePath	VARCHAR(1024),
     imgID		INT,
@@ -64,7 +65,7 @@ CREATE TABLE PRODUCTS
 
 CREATE TABLE ORDER_DETAILS 
 (
-    itemID			INT,
+    itemID			INT ,
     quantity		INT,
     orderID			INT,
     FOREIGN KEY(orderID) REFERENCES ORDERS(orderNum),
@@ -73,7 +74,7 @@ CREATE TABLE ORDER_DETAILS
 
 CREATE TABLE CART
 (
-	cartNum		INT, 
+	cartNum		INT NOT NULL AUTO_INCREMENT, 
     userID		INT,
     PRIMARY KEY(cartNum),
 	FOREIGN KEY(userID) REFERENCES USERS(id)
@@ -90,7 +91,7 @@ CREATE TABLE CART_DETAILS
 
 CREATE TABLE PAYMENT
 (
-    paymentNum	INT,
+    paymentNum	INT NOT NULL AUTO_INCREMENT,
 	orderID		INT,
     payTime		DATETIME,
     cc_num		INT,
